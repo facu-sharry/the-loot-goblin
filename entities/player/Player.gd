@@ -3,6 +3,7 @@ class_name Player
 
 @export var movement_data : MovementResource
 signal walk(direction: Vector2)
+signal dash(dash: bool)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -15,3 +16,7 @@ func _process(delta: float) -> void:
 	)
 	
 	walk.emit(raw_direction)
+	
+	var dashed = Input.get_action_strength("dash")
+	if dashed:
+		dash.emit()
