@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://egpjyd7t3mvw"]
+
+[ext_resource type="Script" uid="uid://cnut8ag11bygt" path="res://demos/movement_system/PlayerDemo.gd" id="1_sfdre"]
+[ext_resource type="Resource" uid="uid://cnknny3u3ti4w" path="res://demos/movement_system/MovementDataDemo.tres" id="2_6ilhs"]
+[ext_resource type="Texture2D" uid="uid://cvgej4yhcie2m" path="res://assets/Sprites/Player/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="3_wbge5"]
+[ext_resource type="Script" uid="uid://c726jeo81no4j" path="res://systems/movement/movement_system.gd" id="4_7cy3w"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_6ilhs"]
+
+[node name="PlayerDemo" type="CharacterBody2D"]
+script = ExtResource("1_sfdre")
+movement_data = ExtResource("2_6ilhs")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_6ilhs")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(15, -5)
+scale = Vector2(1.5, 1.728)
+texture = ExtResource("3_wbge5")
+hframes = 5
+
+[node name="MovementSystem" type="Node" parent="."]
+script = ExtResource("4_7cy3w")
+metadata/_custom_type_script = "uid://c726jeo81no4j"

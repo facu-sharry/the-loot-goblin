@@ -1,13 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://de1otjo25o3gd"]
+[gd_scene load_steps=6 format=3 uid="uid://de1otjo25o3gd"]
 
 [ext_resource type="Texture2D" uid="uid://cvgej4yhcie2m" path="res://assets/Sprites/Player/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc-Idle.png" id="1_4flbx"]
 [ext_resource type="Script" uid="uid://c726jeo81no4j" path="res://systems/movement/movement_system.gd" id="2_abrql"]
+[ext_resource type="Resource" uid="uid://c84u3hoe7akto" path="res://data/entities/player/MovementData.tres" id="2_bls4j"]
 [ext_resource type="Script" uid="uid://dylh4bccfuwvc" path="res://entities/player/Player.gd" id="3_sglur"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_edjgo"]
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("3_sglur")
+movement_data = ExtResource("2_bls4j")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_edjgo")

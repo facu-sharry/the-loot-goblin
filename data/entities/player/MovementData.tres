@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="MovementResource" load_steps=2 format=3 uid="uid://c84u3hoe7akto"]
+
+[ext_resource type="Script" uid="uid://biddpdqerlobe" path="res://data/MovementResource.gd" id="1_0lx3b"]
+
+[resource]
+script = ExtResource("1_0lx3b")
+speed = 120.0
+acceleration = 2400.0
+friction = 2400.0
+dash_speed = 240.0
+dash_duration = 0.25
+dash_cooldown = 1.0
+metadata/_custom_type_script = "uid://biddpdqerlobe"
