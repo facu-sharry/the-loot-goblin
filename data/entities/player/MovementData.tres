@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_0lx3b")
 speed = 120.0
-acceleration = 2200.0
-friction = 2200.0
+acceleration = 2400.0
+friction = 2400.0
 dash_speed = 240.0
 dash_duration = 0.25
 dash_cooldown = 1.0

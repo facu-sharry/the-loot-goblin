@@ -9,7 +9,7 @@ signal dash(dash: bool)
 func _ready() -> void:
 	pass # Replace with function body.
 
-func _process(delta: float) -> void: 
+func _process(_delta: float) -> void: 
 	var raw_direction = Vector2(
 		Input.get_action_strength("right") - Input.get_action_strength("left"),
 		Input.get_action_strength("down") - Input.get_action_strength("up")
