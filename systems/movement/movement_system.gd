@@ -1,29 +1,39 @@
 extends Node
 class_name MovementSystem
 
-enum MoveState { NORMAL, DASH}
+# State Machines for Movement
+var fsm: MovementFSM
+var idle_state: IdleState
+var move_state: MoveState
+var dash_state: DashState
+# end
 
-var state: MoveState = MoveState.NORMAL
-
+# Movement System parameters
 var _body: CharacterBody2D
-
-var speed : float = 120
-var acceleration : float = 1200
-var friction: float = 1200
 var velocity := Vector2.ZERO
-
-var last_non_zero_direction := Vector2.RIGHT
 var direction := Vector2.ZERO
+@export var last_non_zero_direction := Vector2.RIGHT
+# end
 
-var dash_speed: float = 800
-var dash_duration: float = 0.0
-var dash_cooldown: float = 1.0
-var dash : bool = false
-var dash_timer := 0.0
-var dash_cooldown_left : float = 1.0
+# MovementData
+@export var data : MovementResource
+# end
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	fsm = MovementFSM.new(self)
+	add_child(fsm)
+	
+	idle_state = IdleState.new("Idle")
+	move_state = MoveState.new("Move")
+	dash_state = DashState.new("Dash")
+	
+	for state in [idle_state, move_state, dash_state]:
+		state.movement = self
+		fsm.add_child(state)
+	
+	fsm.change_state(idle_state)
+	
 	# Obtains the movement system associated node's entity object which extends 
 	# from (or is) CharacterBody2D
 	var specific_entity = get_parent()
@@ -37,14 +47,9 @@ func _ready() -> void:
 
 	# Get movement data if present
 	if "movement_data" in specific_entity:
-		speed = _body.movement_data.speed
-		dash_speed = _body.movement_data.dash_speed
-		acceleration = _body.movement_data.acceleration
-		friction = _body.movement_data.friction
-		dash_duration = _body.movement_data.dash_duration
-		dash_cooldown = _body.movement_data.dash_cooldown
+		data = specific_entity.movement_data
 	else:
-		push_error("Entity has no movement_data, using system's defaults")
+		push_error("Entity has no movement_data configured or associated (speed, acceleration, etc), system failure")
 		
 	if _body.has_signal("walk"):
 		_body.walk.connect(_on_walk_requested)
@@ -57,52 +62,15 @@ func _ready() -> void:
 		push_error("Entity has no dash signal")
 
 func _on_walk_requested(dir: Vector2):
-	
-	direction = dir.normalized() if state == MoveState.NORMAL else direction
-	if direction.length() > 0 and state == MoveState.NORMAL:
+	direction = dir.normalized() if dir != Vector2.ZERO else Vector2.ZERO
+	if direction != Vector2.ZERO:
 		last_non_zero_direction = direction
 	
 func _on_dash_requested():
-	if state != MoveState.NORMAL:
-		return
-		
-	if dash_cooldown_left > 0.0:
-		return
-			
-	state = MoveState.DASH
-	dash_timer = dash_duration
-	dash_cooldown_left = dash_cooldown
+	fsm.change_state(dash_state)
 
 func _physics_process(delta: float) -> void:
-	if dash_cooldown_left > 0.0:
-		dash_cooldown_left -= delta
+	fsm.update(delta)
 	
-	match state:
-		MoveState.DASH:
-			_process_dash(delta)
-		MoveState.NORMAL:
-			_process_movement(delta)
-
 	_body.velocity = velocity
 	_body.move_and_slide()
-	
-func _process_movement(delta: float):
-	if direction != Vector2.ZERO:
-		velocity = velocity.move_toward(
-			direction * speed,
-			acceleration * delta
-		)
-	else:
-		velocity = velocity.move_toward(
-			Vector2.ZERO,
-			friction * delta
-		)
-	
-func _process_dash(delta: float):
-	if dash_timer <= 0.0:
-		state = MoveState.NORMAL
-		return
-	
-	dash_timer -= delta
-	
-	velocity = last_non_zero_direction * dash_speed
