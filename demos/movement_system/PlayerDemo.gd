@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name Player
+class_name PlayerDemo
 
 @export var movement_data : MovementResource
 signal walk(direction: Vector2)
