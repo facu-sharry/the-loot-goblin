@@ -1,10 +1,15 @@
 extends MovementState
 class_name MoveState
 
+signal walk_left()
+
 func _init(p_name: String):
 	name = p_name
 
 func update(delta):
+	if movement.direction == Vector2.LEFT:
+		walk_left.emit()
+		
 	var target_velocity = movement.direction * movement.data.speed
 
 	movement.velocity = movement.velocity.move_toward(
