@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c726jeo81no4j" path="res://systems/movement/movement_system.gd" id="2_abrql"]
 [ext_resource type="Resource" uid="uid://c84u3hoe7akto" path="res://data/entities/player/MovementData.tres" id="2_bls4j"]
-[ext_resource type="Texture2D" uid="uid://coh88ibivw827" path="res://assets/Sprites/Player/Tiny RPG Character Asset Pack v1.03 -Free Soldier&Orc/Characters(100x100)/Orc/Orc/Orc.png" id="3_bls4j"]
+[ext_resource type="Texture2D" uid="uid://hpla57nj21ex" path="res://assets/Sprites/Player/Orc.png" id="3_fkugw"]
 [ext_resource type="Script" uid="uid://dylh4bccfuwvc" path="res://entities/player/Player.gd" id="3_sglur"]
 [ext_resource type="Script" uid="uid://shog5gooae0f" path="res://systems/animation/animation_system.gd" id="4_bls4j"]
 
@@ -83,6 +83,7 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
+collision_mask = 16
 script = ExtResource("3_sglur")
 movement_data = ExtResource("2_bls4j")
 
@@ -91,7 +92,7 @@ shape = SubResource("CircleShape2D_edjgo")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(1.736, 2)
-texture = ExtResource("3_bls4j")
+texture = ExtResource("3_fkugw")
 hframes = 8
 vframes = 6
 
