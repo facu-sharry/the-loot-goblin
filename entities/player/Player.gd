@@ -11,8 +11,8 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void: 
 	var raw_direction = Vector2(
-		Input.get_action_strength("right") - Input.get_action_strength("left"),
-		Input.get_action_strength("down") - Input.get_action_strength("up")
+		Input.get_axis("left","right"),
+		Input.get_axis("up","down")
 	)
 	
 	walk.emit(raw_direction)
