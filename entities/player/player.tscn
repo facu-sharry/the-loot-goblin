@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://de1otjo25o3gd"]
+[gd_scene format=3 uid="uid://de1otjo25o3gd"]
 
 [ext_resource type="Script" uid="uid://c726jeo81no4j" path="res://systems/movement/movement_system.gd" id="2_abrql"]
 [ext_resource type="Resource" uid="uid://c84u3hoe7akto" path="res://data/entities/player/MovementData.tres" id="2_bls4j"]
@@ -82,29 +82,30 @@ _data = {
 &"walk": SubResource("Animation_8fjmc")
 }
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" unique_id=2031165645]
 collision_mask = 16
+motion_mode = 1
 script = ExtResource("3_sglur")
 movement_data = ExtResource("2_bls4j")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=515349434]
 shape = SubResource("CircleShape2D_edjgo")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1795994334]
 scale = Vector2(1.736, 2)
 texture = ExtResource("3_fkugw")
 hframes = 8
 vframes = 6
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_fkugw")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1983031620]
+libraries/ = SubResource("AnimationLibrary_fkugw")
 
-[node name="MovementSystem" type="Node" parent="."]
+[node name="MovementSystem" type="Node" parent="." unique_id=40647947]
 script = ExtResource("2_abrql")
 metadata/_custom_type_script = "uid://c726jeo81no4j"
 
-[node name="AnimationSystem" type="Node" parent="."]
+[node name="AnimationSystem" type="Node" parent="." unique_id=1250707758]
 script = ExtResource("4_bls4j")
 metadata/_custom_type_script = "uid://shog5gooae0f"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2032563733]
