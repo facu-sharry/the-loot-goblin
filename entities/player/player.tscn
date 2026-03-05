@@ -23,6 +23,22 @@ tracks/0/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_26q78"]
+resource_name = "attack1"
+length = 0.93333334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(-0.033333335, 0.8666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [16, 21]
+}
+
 [sub_resource type="Animation" id="Animation_qiwj3"]
 resource_name = "dash"
 length = 1.2
@@ -34,10 +50,10 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.13333334, 0.3, 0.46666667, 0.6333333, 0.8, 0.96666664, 1.1333333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [8, 9, 10, 11, 12, 13, 14, 15]
+"times": PackedFloat32Array(0, 1.1333333),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [8, 15]
 }
 
 [sub_resource type="Animation" id="Animation_bls4j"]
@@ -51,15 +67,15 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.20000845, 0.4000169, 0.60002536, 0.8),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3, 4]
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0, 4]
 }
 
 [sub_resource type="Animation" id="Animation_8fjmc"]
 resource_name = "walk"
-length = 1.2
+length = 0.93333334
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -68,15 +84,16 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.13333334, 0.3, 0.46666667, 0.6333333, 0.8, 0.96666664, 1.1333333),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [8, 9, 10, 11, 12, 13, 14, 15]
+"times": PackedFloat32Array(-0.033333335, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [8, 15]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fkugw"]
 _data = {
 &"RESET": SubResource("Animation_fkugw"),
+&"attack1": SubResource("Animation_26q78"),
 &"dash": SubResource("Animation_qiwj3"),
 &"idle": SubResource("Animation_bls4j"),
 &"walk": SubResource("Animation_8fjmc")
