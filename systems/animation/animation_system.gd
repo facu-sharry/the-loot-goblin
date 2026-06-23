@@ -9,6 +9,9 @@ func _ready():
 	movement.fsm.state_changed.connect(_on_state_changed)
 	movement.facing_changed.connect(_on_facing_changed)
 	
+	var attack = get_parent().get_node("AttackSystem")
+	attack.fsm.state_changed.connect(_on_state_attack_changed)
+	
 func _on_state_changed(state: State):
 	if not animator:
 		push_error("Animator Player not found")
@@ -24,3 +27,12 @@ func _on_state_changed(state: State):
 
 func _on_facing_changed(dir: Vector2):
 	sprite.flip_h = dir.x < 0
+	
+func _on_state_attack_changed(state: State):
+	if not animator:
+		push_error("Animation Player not found")
+		return
+	
+	match state.name:
+		"Attack":
+			animator.play("attack1")
