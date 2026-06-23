@@ -5,6 +5,9 @@ class_name Player
 signal walk(direction: Vector2)
 signal dash(dash: bool)
 
+@export var attack_data : AttackResource
+signal attack()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	walk.emit(Vector2.ZERO)
@@ -20,3 +23,7 @@ func _process(_delta: float) -> void:
 	var dashed = Input.get_action_strength("dash")
 	if dashed:
 		dash.emit()
+		
+	var attacked = Input.get_action_strength("attack")
+	if attacked:
+		attack.emit()
