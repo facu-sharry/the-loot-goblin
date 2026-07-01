@@ -4,7 +4,7 @@ class_name MovementSystem
 signal facing_changed(dir: Vector2)
 
 # State Machines for Movement
-var fsm: MovementFSM
+var movement_fsm: MovementFSM
 var idle_state: IdleState
 var move_state: MoveState
 var dash_state: DashState
@@ -23,8 +23,8 @@ var direction := Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	fsm = MovementFSM.new(self)
-	add_child(fsm)
+	movement_fsm = MovementFSM.new(self)
+	add_child(movement_fsm)
 	
 	idle_state = IdleState.new("Idle")
 	move_state = MoveState.new("Move")
@@ -32,9 +32,9 @@ func _ready() -> void:
 	
 	for state in [idle_state, move_state, dash_state]:
 		state.movement = self
-		fsm.add_child(state)
+		movement_fsm.add_child(state)
 
-	fsm.change_state(idle_state)
+	movement_fsm.change_state(idle_state)
 	call_deferred("_emit_initial_state")
 	
 	# Obtains the movement system associated node's entity object which extends 
@@ -73,13 +73,13 @@ func _on_walk_requested(dir: Vector2):
 			
 	
 func _on_dash_requested():
-	fsm.change_state(dash_state)
+	movement_fsm.change_state(dash_state)
 
 func _physics_process(delta: float) -> void:
-	fsm.update(delta)
+	movement_fsm.update(delta)
 	
 	_body.velocity = velocity
 	_body.move_and_slide()
 	
 func _emit_initial_state():
-	fsm.state_changed.emit(fsm.current_state)
+	movement_fsm.state_changed.emit(movement_fsm.current_state)

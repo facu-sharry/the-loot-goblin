@@ -19,7 +19,7 @@ func update(delta):
 		time_left -= delta
 		if time_left <= 0:
 			cooldown_left = movement.data.dash_cooldown
-			movement.fsm.change_state(movement.idle_state)
+			movement.movement_fsm.change_state(movement.idle_state)
 
 func tick(delta):
 	if cooldown_left > 0.0:

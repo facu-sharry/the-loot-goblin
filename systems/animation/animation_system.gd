@@ -6,11 +6,11 @@ class_name AnimationSystem
 
 func _ready():
 	var movement = get_parent().get_node("MovementSystem")
-	movement.fsm.state_changed.connect(_on_state_changed)
+	movement.movement_fsm.state_changed.connect(_on_state_changed)
 	movement.facing_changed.connect(_on_facing_changed)
 	
 	var attack = get_parent().get_node("AttackSystem")
-	attack.fsm.state_changed.connect(_on_state_attack_changed)
+	attack.attack_fsm.state_changed.connect(_on_state_attack_changed)
 	
 func _on_state_changed(state: State):
 	if not animator:
@@ -34,5 +34,5 @@ func _on_state_attack_changed(state: State):
 		return
 	
 	match state.name:
-		"Attack":
+		"Attack1":
 			animator.play("attack1")

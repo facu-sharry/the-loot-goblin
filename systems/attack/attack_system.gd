@@ -4,8 +4,9 @@ class_name AttackSystem
 # signal facing_changed(dir: Vector2)
 
 # State Machines for Attacks
-var fsm: AttackFSM
+var attack_fsm: AttackFSM
 var attack1_state: Attack1State
+var idle_state: IdleAttState
 # State Machines for Attacks - end
 
 # Attack System parameters
@@ -17,16 +18,17 @@ var _body: CharacterBody2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	fsm = AttackFSM.new(self)
-	add_child(fsm)
+	attack_fsm = AttackFSM.new(self)
+	add_child(attack_fsm)
 	
 	attack1_state = Attack1State.new("Attack1")
+	idle_state = IdleAttState.new("Idle");
 	
-	for state in [attack1_state]:
+	for state in [idle_state,attack1_state]:
 		state.attack = self
-		fsm.add_child(state)
+		attack_fsm.add_child(state)
 		
-	fsm.change_state(attack1_state)
+	attack_fsm.change_state(idle_state)
 	call_deferred("_emit_initial_state")
 	
 	# Obtains the system associated node's entity object which extends 
@@ -54,14 +56,14 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	fsm.update(delta)
+	attack_fsm.update(delta)
 	
 	pass
 	
 func _emit_initial_state():
-	fsm.state_changed.emit(fsm.current_state)
+	attack_fsm.state_changed.emit(attack_fsm.current_state)
 	
 
 func _on_attack_requested():
-	pass
+	attack_fsm.state_changed.emit(attack1_state)
 			
