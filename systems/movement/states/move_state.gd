@@ -18,4 +18,4 @@ func update(delta):
 	)
 
 	if movement.direction == Vector2.ZERO:
-		movement.movement_fsm.change_state(movement.idle_state)
+		movement.fsm.change_state(movement.idle_state)
