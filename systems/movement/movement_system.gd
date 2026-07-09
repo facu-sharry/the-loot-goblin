@@ -3,8 +3,10 @@ class_name MovementSystem
 
 signal facing_changed(dir: Vector2)
 
+var fsm: FSM
+var _systems_initialized: bool = false
+
 # State Machines for Movement
-var movement_fsm: MovementFSM
 var idle_state: IdleState
 var move_state: MoveState
 var dash_state: DashState
@@ -23,20 +25,6 @@ var direction := Vector2.ZERO
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	movement_fsm = MovementFSM.new(self)
-	add_child(movement_fsm)
-	
-	idle_state = IdleState.new("Idle")
-	move_state = MoveState.new("Move")
-	dash_state = DashState.new("Dash")
-	
-	for state in [idle_state, move_state, dash_state]:
-		state.movement = self
-		movement_fsm.add_child(state)
-
-	movement_fsm.change_state(idle_state)
-	call_deferred("_emit_initial_state")
-	
 	# Obtains the movement system associated node's entity object which extends 
 	# from (or is) CharacterBody2D
 	var specific_entity = get_parent()
@@ -44,6 +32,7 @@ func _ready() -> void:
 	# Ensure we are working with a CharacterBody2D
 	if specific_entity is CharacterBody2D:
 		_body = specific_entity
+		specific_entity.systems_ready.connect(_on_systems_ready)
 	else:
 		push_error("MovementSystem's associated Node must be child of CharacterBody2D")
 		return
@@ -64,6 +53,28 @@ func _ready() -> void:
 	else:
 		push_error("Entity has no dash signal")
 
+func _on_systems_ready(movement: MovementSystem, _attack: AttackSystem, _anim: AnimationSystem):
+	fsm = _body.fsm
+	# Get the FSM from the entity if present
+	if "fsm" in _body and _body.fsm != null:
+		fsm = _body.fsm
+	else:
+		push_error("Entity has no FSM configured or associated, system failure")
+
+	idle_state = IdleState.new("Idle")
+	move_state = MoveState.new("Move")
+	dash_state = DashState.new("Dash")
+	
+	for state in [idle_state, move_state, dash_state]:
+		state.movement = self
+		fsm.add_child(state)
+
+	fsm.change_state(idle_state)
+	call_deferred("_emit_initial_state")
+
+	_systems_initialized = true
+	
+
 func _on_walk_requested(dir: Vector2):
 	direction = dir.normalized() if dir != Vector2.ZERO else Vector2.ZERO
 	if direction != Vector2.ZERO:
@@ -71,15 +82,19 @@ func _on_walk_requested(dir: Vector2):
 			last_non_zero_direction = direction
 			facing_changed.emit(last_non_zero_direction)
 			
-	
 func _on_dash_requested():
-	movement_fsm.change_state(dash_state)
+	if _systems_initialized and fsm:
+		fsm.change_state(dash_state)
 
 func _physics_process(delta: float) -> void:
-	movement_fsm.update(delta)
+	if not _systems_initialized or fsm == null:
+		return
+	
+	fsm.update(delta)
 	
 	_body.velocity = velocity
 	_body.move_and_slide()
 	
 func _emit_initial_state():
-	movement_fsm.state_changed.emit(movement_fsm.current_state)
+	if fsm and fsm.current_state:
+		fsm.state_changed.emit(fsm.current_state)
