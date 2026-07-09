@@ -1,7 +1,9 @@
 extends State
 class_name AttackState
 
-var attack  # referencia al AttackSystem
+var attack : AttackSystem
+var movement: MovementSystem
+var fsm: FSM
 
 func enter(): pass
 func exit(): pass
