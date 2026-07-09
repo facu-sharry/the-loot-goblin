@@ -6,6 +6,13 @@ signal state_changed(new_state: State)
 var prev_state: State
 var current_state: State
 
+var movement_system : MovementSystem
+var attack_system : AttackSystem
+
+func _init(movement = null, attack = null):
+	movement_system = movement
+	attack_system = attack
+
 func change_state(new_state: State):
 	if current_state == new_state:
 		return
